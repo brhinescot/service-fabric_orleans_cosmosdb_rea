@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>graphtest</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.ServiceFabric" Version="2.0.0-rc2" />
+    <PackageReference Include="Microsoft.Orleans.Core" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orleans.Graph.Test\Orleans.Graph.Test.csproj" />
+    <ProjectReference Include="..\ReaService.Orleans.Definition\ReaService.Orleans.Definition.csproj" />
+    <ProjectReference Include="..\ReaService.Orleans\ReaService.Orleans.csproj" />
+  </ItemGroup>
+
+</Project>
