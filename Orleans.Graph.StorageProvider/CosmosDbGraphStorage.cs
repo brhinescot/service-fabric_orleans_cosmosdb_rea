@@ -144,7 +144,9 @@ namespace Orleans.Graph.StorageProvider
             {
                 client = new DocumentClient(new Uri(options.Endpoint), options.AuthKey, new ConnectionPolicy
                 {
-                    EnableEndpointDiscovery = false
+                    EnableEndpointDiscovery = false,
+                    RequestTimeout = TimeSpan.FromMilliseconds(500),
+                    RetryOptions = new RetryOptions{MaxRetryAttemptsOnThrottledRequests = 5, MaxRetryWaitTimeInSeconds = 1}
                 });
 
                 graph = await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(options.Database, options.Collection));

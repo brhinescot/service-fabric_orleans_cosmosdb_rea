@@ -19,7 +19,7 @@ namespace Orleans.Graph
     /// <typeparam name="TInVertex"></typeparam>
     /// <typeparam name="TOutVertex"></typeparam>
     [StorageProvider(ProviderName = "CosmosDBGraph")]
-    public abstract class EdgeGrain<TInVertex, TOutVertex> : Grain<EdgeState> where TInVertex : IVertexGrain where TOutVertex : IVertexGrain
+    public abstract class EdgeGrain<TInVertex, TOutVertex> : Grain<EdgeState>, IEdgeGrain where TInVertex : IVertexGrain where TOutVertex : IVertexGrain
     {
     }
 }

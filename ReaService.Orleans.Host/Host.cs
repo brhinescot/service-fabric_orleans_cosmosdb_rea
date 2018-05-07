@@ -8,13 +8,11 @@ using Microsoft.ServiceFabric.Services.Runtime;
 using Orleans;
 using Orleans.Clustering.ServiceFabric;
 using Orleans.Configuration;
-using Orleans.Configuration.Overrides;
 using Orleans.Graph;
 using Orleans.Graph.Definition;
 using Orleans.Graph.StorageProvider;
 using Orleans.Graph.Test;
 using Orleans.Graph.Test.Definition;
-using Orleans.Graph.Vertex;
 using Orleans.Hosting;
 using Orleans.Hosting.ServiceFabric;
 using Orleans.Runtime;
@@ -40,7 +38,7 @@ namespace ReaService.Orleans.Host
             // Listeners can be opened and closed multiple times over the lifetime of a service instance.
             // A new Orleans silo will be both created and initialized each time the listener is opened and will be shutdown 
             // when the listener is closed.
-            var listener = OrleansServiceListener.CreateStateless(
+            var orleansListener = OrleansServiceListener.CreateStateless(
                 (fabricServiceContext, siloBuilder) =>
                 {
                     siloBuilder.Configure<ClusterOptions>(options =>
@@ -93,7 +91,7 @@ namespace ReaService.Orleans.Host
                     siloBuilder.UseSiloUnobservedExceptionsHandler();
                 });
 
-            return new[] { listener };
+            return new[] { orleansListener };
         }
 
 //        /// <summary>

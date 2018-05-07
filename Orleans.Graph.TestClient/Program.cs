@@ -103,7 +103,16 @@ namespace Orleans.Graph.TestClient
 
                 int partitionNumber = iteration % 100;
 
-                await command.Execute(client, partitionNumber, iteration);
+                try
+                {
+                    await command.Execute(client, partitionNumber, iteration);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"==> Caught excpetion {ex.Message}");
+                    Console.WriteLine();
+                }
 
                 if (partitionNumber == 99)
                 {
@@ -138,30 +147,22 @@ namespace Orleans.Graph.TestClient
         {
             Uri serviceName = new Uri("fabric:/ReaService/ReaService.Orleans.Host");
 
-            var builder = new ClientBuilder();
+            var client = new ClientBuilder()
+                .Configure<ClusterOptions>(options =>
+                {
+                    options.ServiceId = serviceName.ToString();
+                    options.ClusterId = "development";
+                })
+                .UseServiceFabricClustering(serviceName)
+                .ConfigureLogging(logging => logging.AddDebug())
+                .ConfigureApplicationParts(parts =>
+                {
+                    parts.AddApplicationPart(typeof(IAgentGrain).Assembly);
+                    parts.AddApplicationPart(typeof(IVertexGrain).Assembly);
+                    parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
+                })
+                .Build();
 
-            builder.Configure<ClusterOptions>(options =>
-            {
-                options.ServiceId = serviceName.ToString();
-                options.ClusterId = "development";
-            });
-
-            // TODO: Pick a clustering provider and configure it here.
-            builder.UseServiceFabricClustering(serviceName);
-
-            // Add the application assemblies.
-            builder.ConfigureApplicationParts(parts =>
-            {
-                parts.AddApplicationPart(typeof(IAgentGrain).Assembly);
-                parts.AddApplicationPart(typeof(IVertexGrain).Assembly);
-                parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
-            });
-
-            // Optional: configure logging.
-            builder.ConfigureLogging(logging => logging.AddDebug());
-
-            // Create the client and connect to the cluster.
-            var client = builder.Build();
             await client.Connect();
             return client;
         }
