@@ -30,8 +30,8 @@ namespace ReaService.Orleans.Api.Controllers
         [HttpGet("{id}")]
         public Task<PersonalData> Get(Guid id)
         {
-            var personVertex = clusterClient.GetVertexGrain<IPersonVertex>(id, "partition0");
-            return personVertex.GetPersonalDataAsync();
+            var person = clusterClient.GetVertexGrain<IPersonVertex>(id, "partition0"); 
+            return person.GetPersonalDataAsync();
         }
 
         // POST api/values

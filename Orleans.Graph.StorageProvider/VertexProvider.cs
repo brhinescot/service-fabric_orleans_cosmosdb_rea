@@ -85,7 +85,7 @@ namespace Orleans.Graph.StorageProvider
             }
 
             foreach (var property in vertex.GetVertexProperties())
-            {
+            { 
                 if (property.Key[0] == '@' || property.Key == "partition")
                     continue;
 
