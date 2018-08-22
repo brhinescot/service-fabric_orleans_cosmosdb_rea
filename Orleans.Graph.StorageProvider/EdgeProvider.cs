@@ -10,8 +10,7 @@ using Orleans.Graph.Definition;
 using Orleans.Graph.Edge;
 using Orleans.Graph.Query;
 using Orleans.Runtime;
-using AzureEdge = Microsoft.Azure.Graphs.Elements.Edge;
-using AzureProperty = Microsoft.Azure.Graphs.Elements.Property;
+using CosmosDbEdge = Microsoft.Azure.Graphs.Elements.Edge;
 
 #endregion
 
@@ -42,35 +41,35 @@ namespace Orleans.Graph.StorageProvider
 
         internal async Task ReadEdgeStateAsync(GrainReference grainReference, EdgeState edgeState)
         {
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
             
-            string readExpression = $"g.E('{grainReference.ToKeyString()}')";
+            var readExpression = $"g.E('{grainReference.ToKeyString()}')";
 
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 MaxItemCount = 1,
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
 
-            var readQuery = client.CreateGremlinQuery<AzureEdge>(graph, readExpression, feedOptions, GraphSONMode.Normal);
-            var response = await readQuery.ExecuteNextAsync<AzureEdge>();
+            var readQuery = client.CreateGremlinQuery<CosmosDbEdge>(graph, readExpression, feedOptions, GraphSONMode.Normal);
+            var response = await readQuery.ExecuteNextAsync<CosmosDbEdge>();
             log.Info($"CosmosDB: Read Edge State: Request Charge: {response.RequestCharge}");
 
-            AzureEdge edge = response.FirstOrDefault();
+            var edge = response.FirstOrDefault();
             if (edge == null)
                 return;
 
             edgeState.Persisted = true;
 
-            GrainReference inV = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
-            GrainReference outV = grainReferenceConverter.GetGrainFromKeyString(edge.OutVertexId.ToString());
+            var inV = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
+            var outV = grainReferenceConverter.GetGrainFromKeyString(edge.OutVertexId.ToString());
             inV.BindGrainReference(grainFactory);
             outV.BindGrainReference(grainFactory);
 
-            edgeState.SetInVertex(inV.AsReference<IVertexGrain>());
-            edgeState.SetOutVertex(outV.AsReference<IVertexGrain>());
+            edgeState.SetInVertex(inV.AsReference<IVertex>());
+            edgeState.SetOutVertex(outV.AsReference<IVertex>());
 
-            foreach (AzureProperty property in edge.GetProperties())
+            foreach (var property in edge.GetProperties())
             {
                 if (property.Key[0] == '@' || property.Key == "partition")
                     continue;
@@ -81,23 +80,23 @@ namespace Orleans.Graph.StorageProvider
 
         internal async Task WriteEdgeStateAsync(GrainReference grainReference, EdgeState edgeState)
         {
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
 
-            string upsertExpression = (edgeState.Persisted ?
+            var upsertExpression = (edgeState.Persisted ?
                     CreateUpdateExpression(grainReference, edgeState, graphElementGrain) :
                     CreateInsertExpression(grainReference, edgeState, graphElementGrain))
                 .ToString();
 
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 MaxItemCount = 1,
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
 
-            var writeQuery = client.CreateGremlinQuery<AzureEdge>(graph, upsertExpression, feedOptions, GraphSONMode.Normal);
+            var writeQuery = client.CreateGremlinQuery<CosmosDbEdge>(graph, upsertExpression, feedOptions, GraphSONMode.Normal);
             
             log.Info($"CosmosDB: Writing EdgeState for grain Id '{graphElementGrain.ToKeyString()}'");
-            var response = await writeQuery.ExecuteNextAsync<AzureEdge>();
+            var response = await writeQuery.ExecuteNextAsync<CosmosDbEdge>();
             log.Info($"CosmosDB: Writing EdgeState complete: Request Charge: {response.RequestCharge}");
 
             edgeState.Persisted = true;
@@ -106,16 +105,16 @@ namespace Orleans.Graph.StorageProvider
         //g.addV(T.label, 'person', T.id, '9', 'name', 'Brian', 'age', 42).as('a').properties('name').hasValue('Brian').property('acl','public').property('createdOn','12/01/2016').select('a').properties('age').hasValue(42).property('acl','private').select('a')
         internal async Task ClearEdgeStateAsync(GrainReference grainReference, EdgeState edgeState)
         {
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
 
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
 
-            string dropCommand = $"g.E('{graphElementGrain.ToKeyString()}')";
-            var writeQuery = client.CreateGremlinQuery<AzureEdge>(graph, dropCommand, feedOptions);
-            var response = await writeQuery.ExecuteNextAsync<AzureEdge>();
+            var dropCommand = $"g.E('{graphElementGrain.ToKeyString()}')";
+            var writeQuery = client.CreateGremlinQuery<CosmosDbEdge>(graph, dropCommand, feedOptions);
+            var response = await writeQuery.ExecuteNextAsync<CosmosDbEdge>();
             edgeState.Persisted = false;
 
             log.Info($"CosmosDB: Drop Vertex State: Request Charge: {response.RequestCharge}");
@@ -123,18 +122,18 @@ namespace Orleans.Graph.StorageProvider
 
         private static IEdgeResult CreateInsertExpression(GrainReference grainReference, EdgeState edgeState, IGraphElementGrain graphElementGrain)
         {
-            IVertexGrain inVertex = edgeState.GetInVertex();
-            IVertexGrain outVertex = edgeState.GetOutVertex();
+            var inVertex = edgeState.GetInVertex();
+            var outVertex = edgeState.GetOutVertex();
 
-            string inVertexKeyString = inVertex.ToKeyString();
-            string outVertexKeyString = outVertex.ToKeyString();
+            var inVertexKeyString = inVertex.ToKeyString();
+            var outVertexKeyString = outVertex.ToKeyString();
 
-            IEdgeResult insertExpression = g.V(inVertexKeyString)
+            var insertExpression = g.V(inVertexKeyString)
                 .addE(graphElementGrain.GetGraphLabel())
                 .to(g.V(outVertexKeyString))
                 .property("id", grainReference.ToKeyString());
 
-            string partition = graphElementGrain.GetGraphPartition();
+            var partition = graphElementGrain.GetGraphPartition();
             if (!string.IsNullOrEmpty(partition))
                 insertExpression = insertExpression.property("partition", partition);
             

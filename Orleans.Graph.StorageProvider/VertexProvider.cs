@@ -11,7 +11,7 @@ using Orleans.Graph.Definition;
 using Orleans.Graph.Query;
 using Orleans.Graph.Vertex;
 using Orleans.Runtime;
-using AzureVertex = Microsoft.Azure.Graphs.Elements.Vertex;
+using CosmosDbVertex = Microsoft.Azure.Graphs.Elements.Vertex;
 
 #endregion
 
@@ -42,21 +42,21 @@ namespace Orleans.Graph.StorageProvider
 
         internal async Task ReadVertexStateAsync(GrainReference grainReference, VertexState vertexState)
         {
-            string readExpression = $"g.V('{grainReference.ToKeyString()}')";
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var readExpression = $"g.V('{grainReference.ToKeyString()}')";
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
                 
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 MaxItemCount = 1,
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
             
-            var readQuery = client.CreateGremlinQuery<AzureVertex>(graph, readExpression, feedOptions, GraphSONMode.Normal);
+            var readQuery = client.CreateGremlinQuery<CosmosDbVertex>(graph, readExpression, feedOptions, GraphSONMode.Normal);
             
-            var response = await readQuery.ExecuteNextAsync<AzureVertex>();
+            var response = await readQuery.ExecuteNextAsync<CosmosDbVertex>();
             log.Info($"CosmosDB: Read Vertex State: Request Charge: {response.RequestCharge}");
             
-            AzureVertex vertex = response.FirstOrDefault();
+            var vertex = response.FirstOrDefault();
             if (vertex == null)
                 return;
 
@@ -64,24 +64,24 @@ namespace Orleans.Graph.StorageProvider
             
             foreach (var edge in vertex.GetInEdges())
             {
-                GrainReference edgeReference = grainReferenceConverter.GetGrainFromKeyString(edge.Id.ToString());
+                var edgeReference = grainReferenceConverter.GetGrainFromKeyString(edge.Id.ToString());
                 edgeReference.BindGrainReference(grainFactory);
 
-                GrainReference vertexReference = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
+                var vertexReference = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
                 vertexReference.BindGrainReference(grainFactory);
 
-                vertexState.AddInEdge(edgeReference.AsReference<IEdgeGrain>(), vertexReference.AsReference<IVertexGrain>());
+                vertexState.AddInEdge(edgeReference.AsReference<IEdge>(), vertexReference.AsReference<IVertex>());
             }
 
             foreach (var edge in vertex.GetOutEdges())
             {
-                GrainReference edgeReference = grainReferenceConverter.GetGrainFromKeyString(edge.Id.ToString());
+                var edgeReference = grainReferenceConverter.GetGrainFromKeyString(edge.Id.ToString());
                 edgeReference.BindGrainReference(grainFactory);
                 
-                GrainReference vertexReference = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
+                var vertexReference = grainReferenceConverter.GetGrainFromKeyString(edge.InVertexId.ToString());
                 vertexReference.BindGrainReference(grainFactory);
 
-                vertexState.AddOutEdge(edgeReference.AsReference<IEdgeGrain>(), vertexReference.AsReference<IVertexGrain>());
+                vertexState.AddOutEdge(edgeReference.AsReference<IEdge>(), vertexReference.AsReference<IVertex>());
             }
 
             foreach (var property in vertex.GetVertexProperties())
@@ -89,7 +89,7 @@ namespace Orleans.Graph.StorageProvider
                 if (property.Key[0] == '@' || property.Key == "partition")
                     continue;
 
-                VertexProperty vertexProperty = vertexState.SetProperty(property.Key, property.Value.ToString());
+                var vertexProperty = vertexState.SetProperty(property.Key, property.Value.ToString());
 
                 try
                 {
@@ -108,23 +108,23 @@ namespace Orleans.Graph.StorageProvider
 
         internal async Task WriteVertexStateAsync(GrainReference grainReference, VertexState vertexState)
         {
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
 
-            string writeExpression = (vertexState.Persisted ? 
+            var writeExpression = (vertexState.Persisted ? 
                 CreateUpdateExpression(grainReference, vertexState, graphElementGrain) : 
                 CreateInsertExpression(grainReference, vertexState, graphElementGrain))
                 .ToString();
             
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 MaxItemCount = 1,
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
 
-            var writeQuery = client.CreateGremlinQuery<AzureVertex>(graph, writeExpression, feedOptions, GraphSONMode.Normal);
+            var writeQuery = client.CreateGremlinQuery<CosmosDbVertex>(graph, writeExpression, feedOptions, GraphSONMode.Normal);
             
             log.Info($"CosmosDB: Writing VertexState for grain Id '{graphElementGrain.ToKeyString()}'");
-            var response = await writeQuery.ExecuteNextAsync<AzureVertex>();
+            var response = await writeQuery.ExecuteNextAsync<CosmosDbVertex>();
             log.Info($"CosmosDB: Writing VertexState complete: Request Charge: {response.RequestCharge}");
 
             vertexState.Persisted = true;
@@ -132,16 +132,16 @@ namespace Orleans.Graph.StorageProvider
 
         internal async Task ClearVertexStateAsync(GrainReference grainReference, VertexState vertexState)
         {
-            IGraphElementGrain graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
+            var graphElementGrain = grainReference.AsReference<IGraphElementGrain>();
             
-            FeedOptions feedOptions = new FeedOptions
+            var feedOptions = new FeedOptions
             {
                 PartitionKey = new PartitionKey(graphElementGrain.GetGraphPartition())
             };
 
-            string dropCommand = $"g.V('{graphElementGrain.ToKeyString()}')";
-            var writeQuery = client.CreateGremlinQuery<AzureVertex>(graph, dropCommand, feedOptions);
-            var response = await writeQuery.ExecuteNextAsync<AzureVertex>();
+            var dropCommand = $"g.V('{graphElementGrain.ToKeyString()}')";
+            var writeQuery = client.CreateGremlinQuery<CosmosDbVertex>(graph, dropCommand, feedOptions);
+            var response = await writeQuery.ExecuteNextAsync<CosmosDbVertex>();
             vertexState.Persisted = false;
             
             log.Info($"CosmosDB: Drop Vertex State: Request Charge: {response.RequestCharge}");
@@ -154,10 +154,10 @@ namespace Orleans.Graph.StorageProvider
 
         private static IVertexResult CreateInsertExpression(GrainReference grainReference, VertexState vertexState, IGraphElementGrain graphElementGrain)
         {
-            IVertexResult insertExpression = g.AddV(graphElementGrain.GetGraphLabel())
+            var insertExpression = g.AddV(graphElementGrain.GetGraphLabel())
                 .property("id", grainReference.ToKeyString());
 
-            string partition = graphElementGrain.GetGraphPartition();
+            var partition = graphElementGrain.GetGraphPartition();
             if (!string.IsNullOrEmpty(partition))
                 insertExpression= insertExpression.property("partition", partition);
             

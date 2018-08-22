@@ -1,6 +1,7 @@
 ﻿#region Using Directives
 
 using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -156,6 +157,11 @@ namespace Orleans.Graph.StorageProvider
                 edgeProvider = new EdgeProvider(client, graph, grainReferenceConverter, log, grainFactory, serviceId);
 
                 log.Info($"{nameof(CosmosDbGraphStorage)} named '{name}' initialized for service id {clusterOptions.Value.ServiceId}.");
+            }
+            catch (HttpRequestException ex)
+            {
+                log.LogCritical(ex, "Error initializing CosmosDb connection.");
+                throw;
             }
             catch (UriFormatException)
             {

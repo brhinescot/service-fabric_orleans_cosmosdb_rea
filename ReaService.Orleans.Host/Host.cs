@@ -69,6 +69,7 @@ namespace ReaService.Orleans.Host
 
                     var configurationSection = activation.GetConfigurationPackageObject("Config").Settings.Sections["CosmosDbConfig"];
                     var configParameters = configurationSection.Parameters;
+
                     siloBuilder.AddCosmosDbGraphGrainStorage("CosmosDBGraph", options =>
                     {
                         options.Endpoint = configParameters["Endpoint"].Value;
@@ -80,9 +81,9 @@ namespace ReaService.Orleans.Host
                     // Add the application assemblies.
                     siloBuilder.ConfigureApplicationParts(parts =>
                     {
-                        parts.AddApplicationPart(typeof(IAgentGrain).Assembly);
+                        parts.AddApplicationPart(typeof(IAgent).Assembly);
                         parts.AddApplicationPart(typeof(AgentGrain).Assembly);
-                        parts.AddApplicationPart(typeof(IVertexGrain).Assembly);
+                        parts.AddApplicationPart(typeof(IVertex).Assembly);
                         parts.AddApplicationPart(typeof(VertexGrain).Assembly);
                         parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
                         parts.AddApplicationPart(typeof(PersonVertex).Assembly);

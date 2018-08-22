@@ -1,9 +1,10 @@
-﻿using Orleans.Graph.Definition;
-using Orleans.Graph.Vertex;
+﻿#region Using Directives
+
+using Orleans.Graph.Definition;
+
+#endregion
 
 namespace ReaService.Orleans.Definition
 {
-    public interface IDecrementEventGrain : IVertexGrain
-    {
-    }
+    public interface IDecrementEvent : IVertex { }
 }

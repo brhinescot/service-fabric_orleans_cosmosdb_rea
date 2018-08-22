@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
-using Orleans;
+﻿#region Using Directives
+
+using System.Threading.Tasks;
 using Orleans.Graph.Definition;
+
+#endregion
 
 namespace ReaService.Orleans.Definition
 {
-    public interface IDecrementCommitmentGrain : IVertexGrain
+    public interface IDecrementCommitment : IVertex
     {
         Task Fulfill();
     }

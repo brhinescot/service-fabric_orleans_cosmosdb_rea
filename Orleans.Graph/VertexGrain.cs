@@ -12,8 +12,5 @@ namespace Orleans.Graph
     /// 
     /// </summary>
     [StorageProvider(ProviderName = "CosmosDBGraph")]
-    public abstract class VertexGrain : Grain<VertexState>
-    {
-
-    }
+    public abstract class VertexGrain : Grain<VertexState>{}
 }

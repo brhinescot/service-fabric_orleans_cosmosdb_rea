@@ -19,8 +19,8 @@ namespace Orleans.Graph
         /// </summary>
         /// <remarks>
         /// This value may be overridden when calling
-        /// <see cref="GrainExtensions.GetVertexGrain{TGrainInterface}"/> -or-
-        /// <see cref="GrainExtensions.GetVertexGrain{TGrainInterface}(Orleans.IGrainFactory,string,string)"/> and 
+        /// <see cref="GrainExtensions.GetVertexGrain{TGrainInterface}(IGrainFactory,Guid,string)"/> -or-
+        /// <see cref="GrainExtensions.GetVertexGrain{TGrainInterface}(IGrainFactory,string,string)"/> and 
         /// passing in the partition key.
         /// </remarks>
         public string DefaultPartition { get; set; }

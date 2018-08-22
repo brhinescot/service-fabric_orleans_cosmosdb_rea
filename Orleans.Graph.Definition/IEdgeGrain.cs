@@ -3,5 +3,5 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IEdgeGrain : IGraphElementGrain{}
+    public interface IEdge : IGraphElementGrain{}
 }

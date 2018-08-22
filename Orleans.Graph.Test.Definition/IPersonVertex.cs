@@ -12,7 +12,7 @@ namespace Orleans.Graph.Test.Definition
     /// 
     /// </summary>
     [GraphElement(DefaultPartition = "users")]
-    public interface IPersonVertex : IVertexGrain
+    public interface IPersonVertex : IVertex
     {
         /// <summary>
         /// 

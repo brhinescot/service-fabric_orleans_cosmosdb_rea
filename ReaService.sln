@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Graph.Test.Definiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.Graph.UnitTests", "Orleans.Graph.UnitTests\Orleans.Graph.UnitTests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Graph.TestClient", "Orleans.Graph.TestClient\Orleans.Graph.TestClient.csproj", "{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Graph.Definition", "Orleans.Graph.Definition\Orleans.Graph.Definition.csproj", "{6172D083-9A5C-492D-B8D3-BE7CC3CF3C97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReaService.Orleans.Api", "ReaService.Orleans.Api\ReaService.Orleans.Api.csproj", "{218F8236-1CAF-4FA4-9ECC-902F537BD083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReaService.Orleans.Api", "ReaService.Orleans.Api\ReaService.Orleans.Api.csproj", "{218F8236-1CAF-4FA4-9ECC-902F537BD083}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Graph.TestClient", "Orleans.Graph.TestClient\Orleans.Graph.TestClient.csproj", "{70486931-9E4B-4878-826D-78A118949A2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,14 +113,6 @@ Global
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|x64.ActiveCfg = Release|Any CPU
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|x64.Build.0 = Release|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Debug|x64.Build.0 = Debug|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Release|x64.ActiveCfg = Release|Any CPU
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E}.Release|x64.Build.0 = Release|Any CPU
 		{6172D083-9A5C-492D-B8D3-BE7CC3CF3C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6172D083-9A5C-492D-B8D3-BE7CC3CF3C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6172D083-9A5C-492D-B8D3-BE7CC3CF3C97}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -137,6 +129,14 @@ Global
 		{218F8236-1CAF-4FA4-9ECC-902F537BD083}.Release|Any CPU.Build.0 = Release|Any CPU
 		{218F8236-1CAF-4FA4-9ECC-902F537BD083}.Release|x64.ActiveCfg = Release|Any CPU
 		{218F8236-1CAF-4FA4-9ECC-902F537BD083}.Release|x64.Build.0 = Release|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Debug|x64.Build.0 = Debug|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Release|x64.ActiveCfg = Release|Any CPU
+		{70486931-9E4B-4878-826D-78A118949A2B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,8 +149,8 @@ Global
 		{78534320-A3DF-4C08-B0A1-85D6D3620217} = {E06AD236-0C78-4B00-999D-4DDC7E558CDB}
 		{33AE71B5-78C1-457F-A7B0-23E16265B20D} = {E06AD236-0C78-4B00-999D-4DDC7E558CDB}
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47} = {E06AD236-0C78-4B00-999D-4DDC7E558CDB}
-		{0DCFEB29-84FF-47D7-BDB9-903489E7FC6E} = {E06AD236-0C78-4B00-999D-4DDC7E558CDB}
 		{6172D083-9A5C-492D-B8D3-BE7CC3CF3C97} = {A9E82405-4918-408D-A455-DCD4DC6D901F}
+		{70486931-9E4B-4878-826D-78A118949A2B} = {E06AD236-0C78-4B00-999D-4DDC7E558CDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {900A8337-AF24-414D-A54A-D3B666524330}

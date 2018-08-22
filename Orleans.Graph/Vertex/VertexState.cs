@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Orleans.Graph.Definition;
-using Orleans.Graph.Edge;
 using Orleans.Graph.State;
 
 #endregion
@@ -23,7 +22,7 @@ namespace Orleans.Graph.Vertex
         }
         
         private readonly Dictionary<string, VertexProperty> vertexProperties = new Dictionary<string, VertexProperty>();
-        private readonly BranchingCache<Direction, string, string, Guid, IEdgeGrain> edges = new BranchingCache<Direction, string, string, Guid, IEdgeGrain>();
+        private readonly BranchingCache<Direction, string, string, Guid, IEdge> edges = new BranchingCache<Direction, string, string, Guid, IEdge>();
         
         // TODO: Support IEnumerable properties
         public GraphValue this[[NotNull] string key]
@@ -35,10 +34,10 @@ namespace Orleans.Graph.Vertex
 
                 key = key.LowercaseFirst();
 
-                if (vertexProperties.TryGetValue(key, out VertexProperty property))
+                if (vertexProperties.TryGetValue(key, out var property))
                     return property.Value;
 
-                VertexProperty newProperty = new VertexProperty(key, null);
+                var newProperty = new VertexProperty(key, null);
                 vertexProperties.Add(key, newProperty);
                 return newProperty.Value;
             }
@@ -49,7 +48,7 @@ namespace Orleans.Graph.Vertex
 
                 key = key.LowercaseFirst();
                 
-                VertexProperty vertexProperty = new VertexProperty(key, value);
+                var vertexProperty = new VertexProperty(key, value);
 
                 if (vertexProperties.ContainsKey(key))
                     vertexProperties[key] = vertexProperty;
@@ -74,7 +73,7 @@ namespace Orleans.Graph.Vertex
             if (value == null)
                 return new VertexProperty(key, null);
 
-            VertexProperty property = new VertexProperty(key, value);
+            var property = new VertexProperty(key, value);
             if (vertexProperties.ContainsKey(key))
                 vertexProperties[key] = property;
             else
@@ -110,7 +109,7 @@ namespace Orleans.Graph.Vertex
         /// </remarks>
         /// <param name="edge"></param>
         /// <param name="outVertex"></param>
-        public void AddInEdge([NotNull] IEdgeGrain edge, IVertexGrain outVertex)
+        public void AddInEdge([NotNull] IEdge edge, IVertex outVertex)
         {
             if (edge == null) 
                 throw new ArgumentNullException(nameof(edge));
@@ -129,7 +128,7 @@ namespace Orleans.Graph.Vertex
         /// </remarks>
         /// <param name="edge"></param>
         /// <param name="inVertex"></param>
-        public void AddOutEdge([NotNull] IEdgeGrain edge, IVertexGrain inVertex)
+        public void AddOutEdge([NotNull] IEdge edge, IVertex inVertex)
         {
             if (edge == null)
                 throw new ArgumentNullException(nameof(edge));
@@ -140,19 +139,19 @@ namespace Orleans.Graph.Vertex
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetInEdges([CanBeNull] string edgeLabel = null)
+        public IEnumerable<IEdge> GetInEdges([CanBeNull] string edgeLabel = null)
         {
             return edgeLabel == null ? edges.GetSubset(Direction.In) : edges.GetSubset(Direction.In, edgeLabel);
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetOutEdges([CanBeNull] string edgeLabel = null)
+        public IEnumerable<IEdge> GetOutEdges([CanBeNull] string edgeLabel = null)
         {
             return edgeLabel == null ? edges.GetSubset(Direction.Out) : edges.GetSubset(Direction.Out, edgeLabel);
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetInEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
+        public IEnumerable<IEdge> GetInEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
         {
             if (edgeLabel == null) 
                 throw new ArgumentNullException(nameof(edgeLabel));
@@ -163,7 +162,7 @@ namespace Orleans.Graph.Vertex
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetOutEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
+        public IEnumerable<IEdge> GetOutEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
         {
             if (edgeLabel == null) 
                 throw new ArgumentNullException(nameof(edgeLabel));
@@ -174,27 +173,27 @@ namespace Orleans.Graph.Vertex
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetBothEdges([CanBeNull] string label = null)
+        public IEnumerable<IEdge> GetBothEdges([CanBeNull] string label = null)
         {
-            foreach (IEdgeGrain edgeGrain in GetInEdges(label))
+            foreach (IEdge edgeGrain in GetInEdges(label))
                 yield return edgeGrain;
 
-            foreach (IEdgeGrain edgeGrain in GetOutEdges(label))
+            foreach (IEdge edgeGrain in GetOutEdges(label))
                 yield return edgeGrain;
         }
 
         [ItemNotNull, NotNull]
-        public IEnumerable<IEdgeGrain> GetBothEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
+        public IEnumerable<IEdge> GetBothEdges([NotNull] string edgeLabel, [NotNull] string vertexLabel)
         {
             if (edgeLabel == null) 
                 throw new ArgumentNullException(nameof(edgeLabel));
             if (vertexLabel == null) 
                 throw new ArgumentNullException(nameof(vertexLabel));
             
-            foreach (IEdgeGrain edgeGrain in GetInEdges(edgeLabel, vertexLabel))
+            foreach (IEdge edgeGrain in GetInEdges(edgeLabel, vertexLabel))
                 yield return edgeGrain;
 
-            foreach (IEdgeGrain edgeGrain in GetOutEdges(edgeLabel, vertexLabel))
+            foreach (IEdge edgeGrain in GetOutEdges(edgeLabel, vertexLabel))
                 yield return edgeGrain;
         }
     }

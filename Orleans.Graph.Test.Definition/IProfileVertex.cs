@@ -8,7 +8,7 @@ using Orleans.Graph.Definition;
 namespace Orleans.Graph.Test.Definition
 {
     [GraphElement(DefaultPartition = "users")]
-    public interface IProfileVertex : IVertexGrain
+    public interface IProfileVertex : IVertex
     {
         Task SetProfileData(ProfileData data);
 

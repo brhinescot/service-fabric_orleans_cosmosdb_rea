@@ -77,7 +77,7 @@ namespace Orleans.Graph
         /// <param name="primaryKeyGuid"></param>
         /// <param name="partition"></param>
         /// <returns></returns>
-        public static TGrainInterface GetVertexGrain<TGrainInterface>(this IGrainFactory grainFactory, [NotNull] string primaryKeyGuid, string partition = null) where TGrainInterface : IVertexGrain
+        public static TGrainInterface GetVertexGrain<TGrainInterface>(this IGrainFactory grainFactory, [NotNull] string primaryKeyGuid, string partition = null) where TGrainInterface : IVertex
         {
             if (primaryKeyGuid == null)
                 throw new ArgumentNullException(nameof(primaryKeyGuid));
@@ -93,7 +93,7 @@ namespace Orleans.Graph
         /// <param name="partition"></param>
         /// <returns></returns>
         [NotNull]
-        public static TGrainInterface GetVertexGrain<TGrainInterface>(this IGrainFactory grainFactory, Guid primaryKey, string partition = null) where TGrainInterface : IVertexGrain
+        public static TGrainInterface GetVertexGrain<TGrainInterface>(this IGrainFactory grainFactory, Guid primaryKey, string partition = null) where TGrainInterface : IVertex
         {
             return grainFactory.GetGrain<TGrainInterface>(primaryKey, GetKeyExtension(typeof(TGrainInterface), partition), null);
         }
@@ -106,7 +106,7 @@ namespace Orleans.Graph
         /// <param name="primaryKeyGuid"></param>
         /// <param name="outVertex"></param>
         /// <returns></returns>
-        public static TGrainInterface GetEdgeGrain<TGrainInterface>(this IGrainFactory grainFactory, [NotNull] string primaryKeyGuid, IVertexGrain outVertex) where TGrainInterface : IEdgeGrain
+        public static TGrainInterface GetEdgeGrain<TGrainInterface>(this IGrainFactory grainFactory, [NotNull] string primaryKeyGuid, IVertex outVertex) where TGrainInterface : IEdge
         {
             if (primaryKeyGuid == null)
                 throw new ArgumentNullException(nameof(primaryKeyGuid));
@@ -123,7 +123,7 @@ namespace Orleans.Graph
         /// <param name="outVertex"></param>
         /// <returns></returns>
         [NotNull]
-        public static TGrainInterface GetEdgeGrain<TGrainInterface>(this IGrainFactory grainFactory, Guid primaryKey, IVertexGrain outVertex) where TGrainInterface : IEdgeGrain
+        public static TGrainInterface GetEdgeGrain<TGrainInterface>(this IGrainFactory grainFactory, Guid primaryKey, IVertex outVertex) where TGrainInterface : IEdge
         {
             return grainFactory.GetGrain<TGrainInterface>(primaryKey, GetKeyExtension(typeof(TGrainInterface), outVertex.GetGraphPartition()), null);
         }

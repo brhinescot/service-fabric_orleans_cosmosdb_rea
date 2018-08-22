@@ -1,17 +1,19 @@
-﻿using System;
+﻿#region Using Directives
+
+using System;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Orleans;
 using Orleans.Graph.Definition;
+
+#endregion
 
 namespace ReaService.Orleans.Definition
 {
-    public interface IIncrementCommitmentGrain : IVertexGrain
+    public interface IIncrementCommitment : IVertex
     {
         Task Fulfill();
 
-        /// <exception cref="ArgumentNullException"><paramref name="provider"/> is <see langword="null"/></exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resource"/> is <see langword="null"/></exception>
-        Task Initialize([NotNull] IAgentGrain provider, [NotNull] IResourceGrain resource, double amount);
+        /// <exception cref="ArgumentNullException"><paramref name="provider" /> is <see langword="null" /></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resource" /> is <see langword="null" /></exception>
+        Task Initialize(IAgent provider, IResource resource, double amount);
     }
 }

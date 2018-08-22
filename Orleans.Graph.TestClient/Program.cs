@@ -36,7 +36,7 @@ namespace Orleans.Graph.TestClient
             WriteWelcome();
             
             IClusterClient client = await Connect();
-
+            
             WriteReadyMessage();
             
             await StartProcessingLoop(client);
@@ -110,7 +110,7 @@ namespace Orleans.Graph.TestClient
                 catch (Exception ex)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"==> Caught excpetion {ex.Message}");
+                    Console.WriteLine($"==> Caught exception {ex.Message}");
                     Console.WriteLine();
                 }
 
@@ -157,8 +157,8 @@ namespace Orleans.Graph.TestClient
                 .ConfigureLogging(logging => logging.AddDebug())
                 .ConfigureApplicationParts(parts =>
                 {
-                    parts.AddApplicationPart(typeof(IAgentGrain).Assembly);
-                    parts.AddApplicationPart(typeof(IVertexGrain).Assembly);
+                    parts.AddApplicationPart(typeof(IAgent).Assembly);
+                    parts.AddApplicationPart(typeof(IVertex).Assembly);
                     parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
                 })
                 .Build();

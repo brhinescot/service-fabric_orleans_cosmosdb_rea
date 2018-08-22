@@ -18,8 +18,8 @@ namespace Orleans.Graph.Edge
     public class EdgeState : IEnumerable<Property>
     {
         private readonly Dictionary<string, Property> properties = new Dictionary<string, Property>();
-        private IVertexGrain inVertex;
-        private IVertexGrain outVertex;
+        private IVertex inVertex;
+        private IVertex outVertex;
         
         public GraphValue this[[NotNull] string key]
         {
@@ -59,7 +59,7 @@ namespace Orleans.Graph.Edge
         /// 
         /// </summary>
         /// <param name="vertex"></param>
-        public void SetInVertex([NotNull] IVertexGrain vertex)
+        public void SetInVertex([NotNull] IVertex vertex)
         {
             inVertex = vertex ?? throw new ArgumentNullException(nameof(vertex));
         }
@@ -68,7 +68,7 @@ namespace Orleans.Graph.Edge
         /// 
         /// </summary>
         /// <param name="vertex"></param>
-        public void SetOutVertex([NotNull] IVertexGrain vertex)
+        public void SetOutVertex([NotNull] IVertex vertex)
         {
             outVertex = vertex ?? throw new ArgumentNullException(nameof(vertex));
         }
@@ -78,14 +78,14 @@ namespace Orleans.Graph.Edge
         /// </summary>
         /// <returns></returns>
         [CanBeNull]
-        public IVertexGrain GetInVertex() => inVertex;
+        public IVertex GetInVertex() => inVertex;
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         [CanBeNull]
-        public IVertexGrain GetOutVertex() => outVertex;
+        public IVertex GetOutVertex() => outVertex;
 
         #region IEnumerable<Property> Members
 

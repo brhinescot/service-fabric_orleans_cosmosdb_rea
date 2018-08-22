@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region Using Directives
+
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Orleans.Configuration.Overrides;
 using Orleans.Storage;
+
+#endregion
 
 namespace Orleans.Graph.StorageProvider
 {

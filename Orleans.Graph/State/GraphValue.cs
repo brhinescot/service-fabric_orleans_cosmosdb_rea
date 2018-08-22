@@ -15,6 +15,9 @@ namespace Orleans.Graph.State
         public static implicit operator DateTime(GraphValue x) => x == null ? DateTime.MinValue : DateTime.Parse(x.ToString(), DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal);
         public static implicit operator GraphValue(DateTime x) => new GraphValue($"{x.ToUniversalTime():O}", true, x.GetType());
         
+        public static implicit operator DateTimeOffset(GraphValue x) => x == null ? DateTimeOffset.MinValue : DateTimeOffset.Parse(x.ToString(), DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal);
+        public static implicit operator GraphValue(DateTimeOffset x) => new GraphValue($"{x.ToUniversalTime():O}", true, x.GetType());
+        
         public static implicit operator Guid(GraphValue x) => Guid.ParseExact(x.ToString(), "D");
         public static implicit operator GraphValue(Guid x) => new GraphValue($"{x:D}", true, x.GetType());
 
@@ -72,31 +75,6 @@ namespace Orleans.Graph.State
         public TEnum ToEnum<TEnum>()
         {
             return (TEnum) Enum.Parse(typeof(TEnum), stringValue);
-        }
-    }
-
-    public static class StringExtensions
-    {
-        public static string UppercaseFirst(this string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return string.Empty;
-
-            if (s.Length == 1)
-                return s.ToUpper();
-
-            return char.ToUpper(s[0]) + s.Substring(1);
-        }
-
-        public static string LowercaseFirst(this string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return string.Empty; 
-            
-            if (s.Length == 1)
-                return s.ToLower();
-
-            return char.ToLower(s[0]) + s.Substring(1);
         }
     }
 }

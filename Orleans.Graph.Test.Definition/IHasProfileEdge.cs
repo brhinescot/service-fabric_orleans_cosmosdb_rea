@@ -8,7 +8,7 @@ using Orleans.Graph.Definition;
 namespace Orleans.Graph.Test.Definition
 {
     [GraphElement(DefaultPartition = "users")]
-    public interface IHasProfileEdge : IEdgeGrain
+    public interface IHasProfileEdge : IEdge
     {
         Task<IProfileVertex> AddProfile(IPersonVertex personVertex, ProfileData data);
     }

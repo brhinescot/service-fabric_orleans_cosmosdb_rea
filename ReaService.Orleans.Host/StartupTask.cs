@@ -19,7 +19,6 @@ namespace ReaService.Orleans.Host
             this.logger = logger;
         }
 
-
         /// <summary>
         /// Placeholder for now.
         /// </summary>

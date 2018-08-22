@@ -1,29 +1,25 @@
-﻿using System;
+﻿#region Using Directives
+
+using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Orleans;
 using Orleans.Graph;
 using Orleans.Graph.Definition;
 using ReaService.Orleans.Definition;
 
+#endregion
+
 namespace ReaService.Orleans
 {
-    public class IncrementCommitmentGrain : VertexGrain, IIncrementCommitmentGrain
+    public class IncrementCommitmentGrain : VertexGrain, IIncrementCommitment
     {
-        private struct StateKeys
+        /// <exception cref="ArgumentNullException"><paramref name="provider" /> is <see langword="null" /></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resource" /> is <see langword="null" /></exception>
+        public async Task Initialize([NotNull] IAgent provider, [NotNull] IResource resource, double amount)
         {
-            [NotNull] 
-            public static string Fulfilled => "Fulfilled";
-            public static string Amount => "Amount";
-        }
-
-        /// <exception cref="ArgumentNullException"><paramref name="provider"/> is <see langword="null"/></exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resource"/> is <see langword="null"/></exception>
-        public async Task Initialize([NotNull] IAgentGrain provider, [NotNull] IResourceGrain resource, double amount)
-        {
-            if (provider == null) 
+            if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
-            if (resource == null) 
+            if (resource == null)
                 throw new ArgumentNullException(nameof(resource));
 
             State[StateKeys.Amount] = amount;
@@ -43,24 +39,21 @@ namespace ReaService.Orleans
 
             await WriteStateAsync();
         }
+
+        private struct StateKeys
+        {
+            [NotNull]
+            public static string Fulfilled => "Fulfilled";
+
+            public static string Amount => "Amount";
+        }
     }
 
-    public class HasProviderEdge : EdgeGrain<IncrementCommitmentGrain, AgentGrain>, IHasProviderEdge
-    {
+    public class HasProviderEdge : EdgeGrain<IncrementCommitmentGrain, AgentGrain>, IHasProviderEdge { }
 
-    }
+    public interface IHasProviderEdge : IEdge { }
 
-    public interface IHasProviderEdge : IEdgeGrain
-    {
-    }
-    
+    public class HasResourceEdge : EdgeGrain<IncrementCommitmentGrain, ResourceGrain>, IHasResourceEdge { }
 
-    public class HasResourceEdge : EdgeGrain<IncrementCommitmentGrain, ResourceGrain>, IHasResourceEdge
-    {
-
-    }
-
-    public interface IHasResourceEdge : IEdgeGrain
-    {
-    }
+    public interface IHasResourceEdge : IEdge { }
 }

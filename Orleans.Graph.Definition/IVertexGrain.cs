@@ -3,5 +3,5 @@
     /// <summary>
     /// 
     /// </summary>
-    public interface IVertexGrain : IGraphElementGrain{}
+    public interface IVertex : IGraphElementGrain{}
 }
