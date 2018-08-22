@@ -1,8 +1,8 @@
 ﻿#region Using Directives
 
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -25,7 +25,6 @@ namespace ReaService.Orleans.Api
             Environment = environment;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
@@ -35,16 +34,17 @@ namespace ReaService.Orleans.Api
                     builder.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials().Build();
+                        .AllowCredentials()
+                        .Build();
                 });
             });
-            
+
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(options =>
             {
@@ -64,7 +64,7 @@ namespace ReaService.Orleans.Api
                     TermsOfService = "https://<url>.com/rea/terms",
                     Contact = new Contact
                     {
-                        Email = "brian@devinterop.com",
+                        Email = "contact@<url>.com",
                         Name = "REA Service",
                         Url = "https://<url>.com"
                     }
@@ -74,28 +74,30 @@ namespace ReaService.Orleans.Api
             services.AddOrleansClient("fabric:/ReaService/ReaService.Orleans.Host", "REA_Graph");
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            
+
             app.UseCors("CORSAllowAllPolicy");
 
             app.UseMvc();
 
             app.UseSwagger(options =>
             {
-                options.UseLowerCasedPaths();
                 options.RouteTemplate = "docs/{documentName}/openApi.json";
+                options.UseLowerCasedPaths();
             });
 
-            app.UseSwaggerUI(uiOptions =>
+            app.UseSwaggerUI(options =>
             {
-                uiOptions.SwaggerEndpoint("/docs/v1/openApi.json", "REA Service API V1");
-                uiOptions.DocumentTitle = "REA Service OpenApi Documentation";
-                uiOptions.DisplayRequestDuration();
-                uiOptions.RoutePrefix = "docs";
+                options.DocumentTitle = "REA Service OpenApi Documentation";
+                options.RoutePrefix = "docs";
+                options.HeadContent = "<div class=\"swagger-ui\"><h1>DevInterop</h1></div>";
+                options.SwaggerEndpoint("/docs/v1/openApi.json", "REA Service API V1");
+                options.EnableDeepLinking();
+                options.DisplayRequestDuration();
+                options.EnableFilter();
             });
         }
     }

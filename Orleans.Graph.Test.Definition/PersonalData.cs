@@ -14,9 +14,6 @@ namespace Orleans.Graph.Test.Definition
     public class PersonalData
     {
         /// <summary>Initializes a new instance of the <see cref="T:PersonalData" /> class.</summary>
-        public PersonalData() { }
-
-        /// <summary>Initializes a new instance of the <see cref="T:PersonalData" /> class.</summary>
         public PersonalData([NotNull] string firstName, [NotNull] string lastName)
         {
             FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
@@ -25,7 +22,7 @@ namespace Orleans.Graph.Test.Definition
 
         /// <summary>
         /// </summary>
-        [CanBeNull]
+        [NotNull]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -35,11 +32,11 @@ namespace Orleans.Graph.Test.Definition
 
         /// <summary>
         /// </summary>
-        [CanBeNull]
+        [NotNull]
         public string LastName { get; set; }
 
         /// <summary>
         /// </summary>
-        public DateTime Birthdate { get; set; }
+        public DateTimeOffset Birthdate { get; set; }
     }
 }

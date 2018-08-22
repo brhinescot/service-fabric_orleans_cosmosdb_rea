@@ -37,11 +37,9 @@ namespace Orleans.Graph.Test
 
         Task<PersonalData> IPersonVertex.GetPersonalDataAsync()
         {
-            PersonalData data = new PersonalData
+            PersonalData data = new PersonalData(State["firstName"], State["lastName"])
             {
-                FirstName = State["firstName"],
                 MiddleName = State["middleName"],
-                LastName = State["lastName"],
                 Birthdate = State["birthDate"]
             };
 

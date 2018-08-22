@@ -24,10 +24,8 @@ namespace Orleans.Graph.TestClient.Tests
                 IPersonVertex person = client.GetVertexGrain<IPersonVertex>(primaryKey, "partition" + partitionNumber);
             
                 stopwatch.Restart();
-                await person.SetPersonalDataAsync(new PersonalData
+                await person.SetPersonalDataAsync(new PersonalData($"Person{iteration}FirstName", $"Person{iteration}LastName")
                 {
-                    FirstName = $"Person{iteration}FirstName",
-                    LastName = $"Person{iteration}LastName",
                     Birthdate = DateTime.Parse("10/02/1982")
                 });
                 Console.WriteLine($"    ==> SetPersonalDataAsync: {stopwatch.ElapsedMilliseconds}ms");
