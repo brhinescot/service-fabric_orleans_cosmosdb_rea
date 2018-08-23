@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Using Directives
+
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.XPath;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+
+#endregion
 
 namespace ReaService.Orleans.Api.Middleware
 {
@@ -17,7 +19,7 @@ namespace ReaService.Orleans.Api.Middleware
     {
         public static void IncludeEmbeddedXmlComments(this SwaggerGenOptions options, string resourceName)
         {
-            if(string.IsNullOrEmpty(resourceName))
+            if (string.IsNullOrEmpty(resourceName))
                 throw new ArgumentNullException(nameof(resourceName), "The full name of the Swagger Docs resource is required.");
             options.IncludeXmlComments(() =>
             {

@@ -14,7 +14,7 @@ namespace ReaService.Orleans
         {
             State["name"] = "Test";
 
-            return Task.CompletedTask;
+            return WriteStateAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿#region Using Directives
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
@@ -13,17 +14,21 @@ namespace Orleans.Graph.Test.Definition
     [DebuggerDisplay("FirstName: {FirstName,nq}, LastName: {LastName,nq}")]
     public class PersonalData
     {
-        /// <summary>Initializes a new instance of the <see cref="T:PersonalData" /> class.</summary>
-        public PersonalData([NotNull] string firstName, [NotNull] string lastName)
-        {
-            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
-            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
-        }
+        /// <summary>
+        /// </summary>
+        public DateTimeOffset Birthdate { get; set; }
 
         /// <summary>
         /// </summary>
+        [Required]
         [NotNull]
         public string FirstName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Required]
+        [NotNull]
+        public string LastName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -31,12 +36,12 @@ namespace Orleans.Graph.Test.Definition
         public string MiddleName { get; set; }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="T:PersonalData" /> class.
         /// </summary>
-        [NotNull]
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        public DateTimeOffset Birthdate { get; set; }
+        public PersonalData([NotNull] string firstName, [NotNull] string lastName)
+        {
+            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+        }
     }
 }

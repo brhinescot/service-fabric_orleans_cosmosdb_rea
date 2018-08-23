@@ -10,11 +10,11 @@ namespace ReaService.Orleans
 {
     public class DecrementCommitmentGrain : VertexGrain, IDecrementCommitment
     {
-        public async Task Fulfill()
+        public Task Fulfill()
         {
             State[StateKeys.Fulfilled] = true;
 
-            await WriteStateAsync();
+            return WriteStateAsync();
         }
 
         private struct StateKeys

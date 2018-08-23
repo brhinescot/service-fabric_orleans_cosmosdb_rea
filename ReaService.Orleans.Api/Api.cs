@@ -39,7 +39,6 @@ namespace ReaService.Orleans.Api
                             .ConfigureServices(
                                 services => services
                                     .AddSingleton(serviceContext))
-                            .UseContentRoot(Directory.GetCurrentDirectory())
                             .UseStartup<Startup>()
                             .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                             .UseUrls(url)

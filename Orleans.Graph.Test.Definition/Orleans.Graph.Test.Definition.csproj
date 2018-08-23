@@ -16,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

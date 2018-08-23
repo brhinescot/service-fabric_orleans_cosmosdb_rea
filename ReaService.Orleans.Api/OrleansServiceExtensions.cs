@@ -36,7 +36,7 @@ namespace ReaService.Orleans.Api
                 })
                 .Build();
 
-            client.Connect().Wait();
+            client.Connect().GetAwaiter().GetResult();
             services.AddSingleton(client);
         }
     }

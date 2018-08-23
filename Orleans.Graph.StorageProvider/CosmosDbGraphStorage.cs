@@ -14,6 +14,7 @@ using Orleans.Graph.Edge;
 using Orleans.Graph.Vertex;
 using Orleans.Runtime;
 using Orleans.Storage;
+using ReaService;
 
 #endregion
 
@@ -79,6 +80,8 @@ namespace Orleans.Graph.StorageProvider
         /// <returns>Completion promise for the Read operation on the specified grain.</returns>
         public async Task ReadStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
+            await SynchronizationContextRemover.Instance;
+
             switch (grainState.State)
             {
                 case VertexState vertexState:
@@ -99,6 +102,8 @@ namespace Orleans.Graph.StorageProvider
         /// <returns>Completion promise for the Write operation on the specified grain.</returns>
         public async Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
+            await SynchronizationContextRemover.Instance;
+
             switch (grainState.State)
             {
                 case VertexState vertexState:
@@ -119,6 +124,8 @@ namespace Orleans.Graph.StorageProvider
         /// <returns>Completion promise for the Delete operation on the specified grain.</returns>
         public async Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
+            await SynchronizationContextRemover.Instance;
+
             switch (grainState.State)
             {
                 case VertexState vertexState:
@@ -149,7 +156,7 @@ namespace Orleans.Graph.StorageProvider
                     RequestTimeout = TimeSpan.FromMilliseconds(500),
                     RetryOptions = new RetryOptions{MaxRetryAttemptsOnThrottledRequests = 5, MaxRetryWaitTimeInSeconds = 1}
                 });
-
+                
                 graph = await client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(options.Database, options.Collection));
                 graph.PartitionKey.Paths.Add("/partition");
 
@@ -163,16 +170,19 @@ namespace Orleans.Graph.StorageProvider
                 log.LogCritical(ex, "Error initializing CosmosDb connection.");
                 throw;
             }
-            catch (UriFormatException)
+            catch (UriFormatException ex)
             {
+                log.LogCritical(ex, "Error initializing CosmosDb connection.");
                 throw;
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
+                log.LogCritical(ex, "Error initializing CosmosDb connection.");
                 throw;
             }
-            catch (DocumentClientException)
+            catch (DocumentClientException ex)
             {
+                log.LogCritical(ex, "Error initializing CosmosDb connection.");
                 throw;
             }
         }

@@ -4,13 +4,13 @@ using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Orleans.Graph.Test.Definition;
+using ReaService;
 
 #endregion
 
 namespace Orleans.Graph.Test
 {
     /// <summary>
-    /// 
     /// </summary>
     [UsedImplicitly]
     public class PersonVertex : VertexGrain, IPersonVertex
@@ -18,26 +18,25 @@ namespace Orleans.Graph.Test
         #region IPersonVertex Members
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        async Task IPersonVertex.SetPersonalDataAsync(PersonalData data)
+        Task IPersonVertex.SetPersonalDataAsync(PersonalData data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
-            
+
             State["firstName"] = data.FirstName;
             State["middleName"] = data.MiddleName;
             State["lastName"] = data.LastName;
             State["birthDate"] = data.Birthdate;
 
-            await WriteStateAsync();
+            return WriteStateAsync();
         }
 
         Task<PersonalData> IPersonVertex.GetPersonalDataAsync()
         {
-            PersonalData data = new PersonalData(State["firstName"], State["lastName"])
+            var data = new PersonalData(State["firstName"], State["lastName"])
             {
                 MiddleName = State["middleName"],
                 Birthdate = State["birthDate"]
@@ -48,11 +47,13 @@ namespace Orleans.Graph.Test
 
         public async Task<IProfileVertex> AddProfileAsync(ProfileData data)
         {
-            IHasProfileEdge hasProfileEdge = GrainFactory.GetEdgeGrain<IHasProfileEdge>(Guid.NewGuid(), this);
-            IProfileVertex profileVertex = await hasProfileEdge.AddProfile(this, data);
+            await SynchronizationContextRemover.Instance;
+
+            var hasProfileEdge = GrainFactory.GetEdgeGrain<IHasProfileEdge>(Guid.NewGuid(), this);
+            var profileVertex = await hasProfileEdge.AddProfile(this, data);
 
             State.AddOutEdge(hasProfileEdge, profileVertex);
-            
+
             return profileVertex;
         }
 

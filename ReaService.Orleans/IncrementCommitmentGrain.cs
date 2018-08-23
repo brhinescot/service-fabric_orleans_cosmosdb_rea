@@ -15,7 +15,7 @@ namespace ReaService.Orleans
     {
         /// <exception cref="ArgumentNullException"><paramref name="provider" /> is <see langword="null" /></exception>
         /// <exception cref="ArgumentNullException"><paramref name="resource" /> is <see langword="null" /></exception>
-        public async Task Initialize([NotNull] IAgent provider, [NotNull] IResource resource, double amount)
+        public Task Initialize([NotNull] IAgent provider, [NotNull] IResource resource, double amount)
         {
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
@@ -30,14 +30,14 @@ namespace ReaService.Orleans
             var hasResourceEdge = GrainFactory.GetEdgeGrain<IHasResourceEdge>(Guid.NewGuid(), this);
             State.AddOutEdge(hasResourceEdge, resource);
 
-            await WriteStateAsync();
+            return WriteStateAsync();
         }
 
-        public async Task Fulfill()
+        public Task Fulfill()
         {
             State[StateKeys.Fulfilled] = true;
 
-            await WriteStateAsync();
+            return WriteStateAsync();
         }
 
         private struct StateKeys

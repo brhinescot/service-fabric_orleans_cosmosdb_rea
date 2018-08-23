@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ReaService.Orleans.Api.Middleware;
@@ -37,6 +38,13 @@ namespace ReaService.Orleans.Api
                         .AllowCredentials()
                         .Build();
                 });
+            });
+
+            services.AddLogging(builder =>
+            {
+                builder.AddEventSourceLogger()
+                    .AddDebug()
+                    .AddConsole();
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
@@ -79,8 +87,12 @@ namespace ReaService.Orleans.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseCors("CORSAllowAllPolicy");
+            app.UseHealthCheck();
+            app.UseRequestTimer();
+            app.UseRequestTracking();
 
+            app.UseCors("CORSAllowAllPolicy");
+            
             app.UseMvc();
 
             app.UseSwagger(options =>

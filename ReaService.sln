@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReaService.Orleans.Api", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Graph.TestClient", "Orleans.Graph.TestClient\Orleans.Graph.TestClient.csproj", "{70486931-9E4B-4878-826D-78A118949A2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReaService.Core", "ReaService.Core\ReaService.Core.csproj", "{29907E6A-FE20-4894-A361-434E1C89360F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,14 @@ Global
 		{70486931-9E4B-4878-826D-78A118949A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70486931-9E4B-4878-826D-78A118949A2B}.Release|x64.ActiveCfg = Release|Any CPU
 		{70486931-9E4B-4878-826D-78A118949A2B}.Release|x64.Build.0 = Release|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Debug|x64.Build.0 = Debug|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Release|x64.ActiveCfg = Release|Any CPU
+		{29907E6A-FE20-4894-A361-434E1C89360F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

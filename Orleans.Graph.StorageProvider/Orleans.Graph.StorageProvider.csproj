@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Orleans.Graph\Orleans.Graph.csproj" />
+    <ProjectReference Include="..\ReaService.Core\ReaService.Core.csproj" />
   </ItemGroup>
 
 </Project>

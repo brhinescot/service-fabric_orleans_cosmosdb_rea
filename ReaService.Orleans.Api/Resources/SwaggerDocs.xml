@@ -20,6 +20,11 @@
                 Provides additional application specific helpers for returning status codes.
             </summary>
         </member>
+        <member name="T:ReaService.Orleans.Api.Middleware.RequestTrackingMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:ReaService.Orleans.Api.Middleware.StringExtensions.ToLowerInvariantWithTemplate(System.String,System.Char,System.Char)">
             <summary>
                 Returns a copy of this string converted to lowercase, skipping letters that fall between the
