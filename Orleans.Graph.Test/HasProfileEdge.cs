@@ -9,18 +9,18 @@ using Orleans.Graph.Test.Definition;
 namespace Orleans.Graph.Test
 {
     [UsedImplicitly]
-    public class HasProfileEdge : EdgeGrain<IPersonVertex, IProfileVertex>, IHasProfileEdge
+    public class HasProfileEdge : EdgeGrain<IPerson, IProfile>, IHasProfile
     {
-        public async Task<IProfileVertex> AddProfile(IPersonVertex personVertex, ProfileData data)
+        public async Task<IProfile> AddProfile(IPerson person, ProfileData data)
         {
-            IProfileVertex profileVertex = GrainFactory.GetVertexGrain<IProfileVertex>(this.GetGraphRuntimeId(), this.GetGraphPartition());
-            await profileVertex.SetProfileData(data);
+            var profile = GrainFactory.GetVertexGrain<IProfile>(this.GetGraphRuntimeId(), this.GetGraphPartition());
+            await profile.SetProfileData(data);
             
-            State.SetInVertex(personVertex);
-            State.SetOutVertex(profileVertex);
+            State.SetInVertex(person);
+            State.SetOutVertex(profile);
 
             await WriteStateAsync();
-            return profileVertex;
+            return profile;
         }
     }
 }

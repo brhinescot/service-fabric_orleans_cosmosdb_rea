@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 
 #endregion
 
-namespace ReaService.Orleans.Api.Middleware
+namespace ReaService.Orleans.Api
 {
     /// <summary>
     /// 

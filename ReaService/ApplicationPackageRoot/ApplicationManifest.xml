@@ -7,6 +7,7 @@
     <Parameter Name="Orleans.Graph.Host_AuthKey" DefaultValue="" />
     <Parameter Name="Orleans.Graph.Host_Database" DefaultValue="" />
     <Parameter Name="Orleans.Graph.Host_Collection" DefaultValue="" />
+    <Parameter Name="Environment" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -14,6 +15,9 @@
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ReaService.Orleans.ApiPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Environment]" />
+    </EnvironmentOverrides>
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ReaService.Orleans.HostPkg" ServiceManifestVersion="1.0.0" />

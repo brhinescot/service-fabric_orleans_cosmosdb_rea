@@ -39,6 +39,8 @@ namespace ReaService.Orleans.Api
                             .ConfigureServices(
                                 services => services
                                     .AddSingleton(serviceContext))
+                            .CaptureStartupErrors(true)
+                            .UseSetting("detailedErrors", "true")
                             .UseStartup<Startup>()
                             .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                             .UseUrls(url)

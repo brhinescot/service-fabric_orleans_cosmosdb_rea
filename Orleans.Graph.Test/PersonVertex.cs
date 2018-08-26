@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Orleans.Graph.Test.Definition;
 using ReaService;
+using ReaService.Orleans;
 
 #endregion
 
@@ -13,15 +14,15 @@ namespace Orleans.Graph.Test
     /// <summary>
     /// </summary>
     [UsedImplicitly]
-    public class PersonVertex : VertexGrain, IPersonVertex
+    public class PersonVertex : VertexGrain, IPerson
     {
-        #region IPersonVertex Members
+        #region IPerson Members
 
         /// <summary>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        Task IPersonVertex.SetPersonalDataAsync(PersonalData data)
+        Task IPerson.SetPersonalDataAsync(PersonalData data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -34,7 +35,7 @@ namespace Orleans.Graph.Test
             return WriteStateAsync();
         }
 
-        Task<PersonalData> IPersonVertex.GetPersonalDataAsync()
+        Task<PersonalData> IPerson.GetPersonalDataAsync()
         {
             var data = new PersonalData(State["firstName"], State["lastName"])
             {
@@ -45,11 +46,11 @@ namespace Orleans.Graph.Test
             return Task.FromResult(data);
         }
 
-        public async Task<IProfileVertex> AddProfileAsync(ProfileData data)
+        public async Task<IProfile> AddProfileAsync(ProfileData data)
         {
             await SynchronizationContextRemover.Instance;
 
-            var hasProfileEdge = GrainFactory.GetEdgeGrain<IHasProfileEdge>(Guid.NewGuid(), this);
+            var hasProfileEdge = GrainFactory.GetEdgeGrain<IHasProfile>(Guid.NewGuid(), this);
             var profileVertex = await hasProfileEdge.AddProfile(this, data);
 
             State.AddOutEdge(hasProfileEdge, profileVertex);
@@ -58,5 +59,15 @@ namespace Orleans.Graph.Test
         }
 
         #endregion
+    }
+    
+    [UsedImplicitly]
+    public class OrganizationAgent : AgentGrain, IOrganization
+    {
+        public Task AddPerson(IPerson person)
+        {
+            State["personId"] = person.ToKeyString();
+            return WriteStateAsync();
+        }
     }
 }

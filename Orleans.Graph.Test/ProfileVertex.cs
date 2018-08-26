@@ -7,7 +7,7 @@ using Orleans.Graph.Test.Definition;
 
 namespace Orleans.Graph.Test
 {
-    public class ProfileVertex : VertexGrain, IProfileVertex
+    public class ProfileVertex : VertexGrain, IProfile
     {
         public Task SetProfileData(ProfileData data)
         {

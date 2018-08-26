@@ -85,7 +85,7 @@ namespace ReaService.Orleans.Host
                         parts.AddApplicationPart(typeof(AgentGrain).Assembly);
                         parts.AddApplicationPart(typeof(IVertex).Assembly);
                         parts.AddApplicationPart(typeof(VertexGrain).Assembly);
-                        parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
+                        parts.AddApplicationPart(typeof(IPerson).Assembly);
                         parts.AddApplicationPart(typeof(PersonVertex).Assembly);
                     });
 

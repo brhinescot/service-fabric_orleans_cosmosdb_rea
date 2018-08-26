@@ -32,7 +32,7 @@ namespace ReaService.Orleans.Api
                 {
                     parts.AddApplicationPart(typeof(IAgent).Assembly);
                     parts.AddApplicationPart(typeof(IVertex).Assembly);
-                    parts.AddApplicationPart(typeof(IPersonVertex).Assembly);
+                    parts.AddApplicationPart(typeof(IPerson).Assembly);
                 })
                 .Build();
 

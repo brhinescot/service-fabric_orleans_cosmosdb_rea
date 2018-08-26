@@ -20,12 +20,37 @@
                 Provides additional application specific helpers for returning status codes.
             </summary>
         </member>
-        <member name="T:ReaService.Orleans.Api.Middleware.RequestTrackingMiddleware">
+        <member name="M:ReaService.Orleans.Api.Controllers.PersonController.#ctor(Orleans.IClusterClient,Orleans.Graph.Test.Definition.IOrganization)">
+            <summary>
+                The PersonController
+            </summary>
+            <param name="clusterClient"></param>
+            <param name="organization"></param>
+        </member>
+        <member name="M:ReaService.Orleans.Api.Controllers.PersonController.CreatePerson(Orleans.Graph.Test.Definition.PersonalData)">
+            <summary>
+                Creates a new person.
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ReaService.Orleans.Api.ProcessingTimeMiddleware">
             <summary>
             
             </summary>
         </member>
-        <member name="M:ReaService.Orleans.Api.Middleware.StringExtensions.ToLowerInvariantWithTemplate(System.String,System.Char,System.Char)">
+        <member name="M:ReaService.Orleans.Api.ProcessingTimeMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="T:ReaService.Orleans.Api.RequestTrackingMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReaService.Orleans.Api.StringExtensions.ToLowerInvariantWithTemplate(System.String,System.Char,System.Char)">
             <summary>
                 Returns a copy of this string converted to lowercase, skipping letters that fall between the
                 template indicators.

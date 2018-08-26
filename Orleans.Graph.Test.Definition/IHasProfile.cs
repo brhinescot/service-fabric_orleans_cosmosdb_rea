@@ -8,10 +8,8 @@ using Orleans.Graph.Definition;
 namespace Orleans.Graph.Test.Definition
 {
     [GraphElement(DefaultPartition = "users")]
-    public interface IProfileVertex : IVertex
+    public interface IHasProfile : IEdge
     {
-        Task SetProfileData(ProfileData data);
-
-        Task<ProfileData> GetProfileDataAsync();
+        Task<IProfile> AddProfile(IPerson person, ProfileData data);
     }
 }

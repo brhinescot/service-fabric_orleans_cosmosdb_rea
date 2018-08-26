@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 #endregion
 
-namespace ReaService.Orleans.Api.Middleware
+namespace ReaService.Orleans.Api
 {
     public static class SwaggerExtensions
     {
@@ -21,6 +21,7 @@ namespace ReaService.Orleans.Api.Middleware
         {
             if (string.IsNullOrEmpty(resourceName))
                 throw new ArgumentNullException(nameof(resourceName), "The full name of the Swagger Docs resource is required.");
+            
             options.IncludeXmlComments(() =>
             {
                 var assembly = Assembly.GetExecutingAssembly();
