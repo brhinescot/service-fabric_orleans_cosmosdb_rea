@@ -16,23 +16,35 @@ namespace ReaService.Orleans.Api.Middleware
     /// </summary>
     public class RequestTrackingMiddleware
     {
+        private const string CorrelationIdHeader = "X-Correlation-ID";
         private readonly RequestDelegate next;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
         public RequestTrackingMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         [DebuggerStepThrough, UsedImplicitly]
         public async Task Invoke(HttpContext context)
         {
-            var tracker = Guid.NewGuid();
-            context.Items.Add("RequestIdentifier", tracker);
+            var correlationId = context.Request.Headers[CorrelationIdHeader];
+            if(correlationId == string.Empty)
+                correlationId = Guid.NewGuid().ToString("N");
+            context.Items.Add("CorrelationId", correlationId);
 
             context.Response.OnStarting(state =>
             {
                 var httpContext = (HttpContext) state;
-                httpContext.Response.Headers.Add("X-Request-Identifier", tracker.ToString());
+                httpContext.Response.Headers.Add(CorrelationIdHeader, correlationId);
                 return Task.CompletedTask;
             }, context);
 

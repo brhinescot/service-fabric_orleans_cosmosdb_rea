@@ -20,6 +20,17 @@
                 Provides additional application specific helpers for returning status codes.
             </summary>
         </member>
+        <member name="T:ReaService.Orleans.Api.Middleware.ProcessingTimeMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReaService.Orleans.Api.Middleware.ProcessingTimeMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
         <member name="T:ReaService.Orleans.Api.Middleware.RequestTrackingMiddleware">
             <summary>
             

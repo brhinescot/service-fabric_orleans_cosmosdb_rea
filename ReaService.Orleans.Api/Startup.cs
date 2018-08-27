@@ -87,9 +87,9 @@ namespace ReaService.Orleans.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseHealthCheck();
-            app.UseRequestTimer();
             app.UseRequestTracking();
+            app.UseRequestTimer();
+            app.UseHealthCheck();
 
             app.UseCors("CORSAllowAllPolicy");
             
