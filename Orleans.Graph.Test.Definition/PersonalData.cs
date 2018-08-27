@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 namespace Orleans.Graph.Test.Definition
 {
     /// <summary>
+    /// PersonalData
     /// </summary>
     [DebuggerDisplay("FirstName: {FirstName,nq}, LastName: {LastName,nq}")]
     public class PersonalData
@@ -19,12 +20,14 @@ namespace Orleans.Graph.Test.Definition
         public DateTimeOffset Birthdate { get; set; }
 
         /// <summary>
+        /// The first name
         /// </summary>
         [Required]
         [NotNull]
         public string FirstName { get; set; }
 
         /// <summary>
+        /// The last name.
         /// </summary>
         [Required]
         [NotNull]

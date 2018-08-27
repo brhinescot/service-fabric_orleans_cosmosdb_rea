@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace ReaService.Orleans.Api.Middleware
+namespace ReaService.Orleans.Api
 {
     public class HealthCheckMiddleware
     {

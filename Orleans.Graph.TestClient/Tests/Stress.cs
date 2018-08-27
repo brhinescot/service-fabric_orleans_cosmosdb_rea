@@ -21,7 +21,7 @@ namespace Orleans.Graph.TestClient.Tests
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
                 var primaryKey = Guid.NewGuid();
-                IPersonVertex person = client.GetVertexGrain<IPersonVertex>(primaryKey, "partition" + partitionNumber);
+                IPerson person = client.GetVertexGrain<IPerson>(primaryKey, "partition" + partitionNumber);
             
                 stopwatch.Restart();
                 await person.SetPersonalDataAsync(new PersonalData($"Person{iteration}FirstName", $"Person{iteration}LastName")
@@ -31,25 +31,25 @@ namespace Orleans.Graph.TestClient.Tests
                 Console.WriteLine($"    ==> SetPersonalDataAsync: {stopwatch.ElapsedMilliseconds}ms");
             
                 stopwatch.Restart();
-                IProfileVertex personalProfileVertex = await person.AddProfileAsync(new ProfileData {Name = "PersonalProfile"});
+                IProfile personalProfile = await person.AddProfileAsync(new ProfileData {Name = "PersonalProfile"});
                 Console.WriteLine($"    ==> Add Personal Profile: {stopwatch.ElapsedMilliseconds}ms");
 
                 stopwatch.Restart();
-                IProfileVertex businessProfileVertex = await person.AddProfileAsync(new ProfileData {Name = "BusinessProfile"});
+                IProfile businessProfile = await person.AddProfileAsync(new ProfileData {Name = "BusinessProfile"});
                 Console.WriteLine($"    ==> Add Business Profile: {stopwatch.ElapsedMilliseconds}ms");
 
                 Console.WriteLine();
 
                 stopwatch.Restart();
 
-                person = client.GetVertexGrain<IPersonVertex>(primaryKey, "partition" + partitionNumber);
+                person = client.GetVertexGrain<IPerson>(primaryKey, "partition" + partitionNumber);
                 var personalDataAsync = await person.GetPersonalDataAsync();
 
-                ProfileData personalProfileData = await personalProfileVertex.GetProfileDataAsync();
+                ProfileData personalProfileData = await personalProfile.GetProfileDataAsync();
                 Console.WriteLine($"        ==> Get Personal Profile: {stopwatch.ElapsedMilliseconds}ms");
 
                 stopwatch.Restart();
-                ProfileData businessProfileData = await businessProfileVertex.GetProfileDataAsync();
+                ProfileData businessProfileData = await businessProfile.GetProfileDataAsync();
                 Console.WriteLine($"        ==> Get Business Profile: {stopwatch.ElapsedMilliseconds}ms");
 
                 stopwatch.Stop();
@@ -67,7 +67,7 @@ namespace Orleans.Graph.TestClient.Tests
 //        [Test(Iterations = 100)]
 //        public async Task Person(IClusterClient client, int partitionNumber, int iteration)
 //        {
-//            IPersonVertex person = client.GetVertexGrain<IPersonVertex>(Guid.NewGuid(), "partition" + partitionNumber);
+//            IPerson person = client.GetVertexGrain<IPerson>(Guid.NewGuid(), "partition" + partitionNumber);
 //            await person.SetPersonalDataAsync(new PersonalData
 //            {
 //                FirstName = $"Person{iteration}FirstName",

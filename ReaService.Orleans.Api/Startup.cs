@@ -1,14 +1,18 @@
 ﻿#region Using Directives
 
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using ReaService.Orleans.Api.Middleware;
+using Orleans;
+using Orleans.Graph;
+using Orleans.Graph.Test.Definition;
 using Swashbuckle.AspNetCore.Swagger;
 
 #endregion
@@ -52,7 +56,7 @@ namespace ReaService.Orleans.Api
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(options =>
             {
@@ -80,6 +84,15 @@ namespace ReaService.Orleans.Api
             });
 
             services.AddOrleansClient("fabric:/ReaService/ReaService.Orleans.Host", "REA_Graph");
+
+            services.AddScoped(provider =>
+            {
+//                var context = provider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+//                var organizationHeader = context.Request.Headers["organization"];
+
+                var clusterClient = provider.GetRequiredService<IClusterClient>();
+                return clusterClient.GetVertexGrain<IOrganization>(Guid.ParseExact("c94ed5be-a7a7-4bff-af0c-adcdac615908", "D"), "partition0");
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

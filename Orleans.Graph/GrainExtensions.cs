@@ -17,7 +17,7 @@ namespace Orleans.Graph
     /// </summary>
     public static class GrainExtensions
     {
-        private static readonly Regex LabelRegEx = new Regex(@"^I(\w+)(?:Grain|Edge|Vertex|Actor)$", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex LabelRegEx = new Regex(@"^I(\w+?)(?:Grain|Actor|Vertex|Edge|\r?$)", RegexOptions.Compiled | RegexOptions.Singleline);
 
         /// <summary>
         /// </summary>
@@ -26,7 +26,7 @@ namespace Orleans.Graph
         [NotNull]
         public static string GetGraphLabel(this IGraphElementGrain grain)
         {
-            grain.GetPrimaryKey(out string keyExt);
+            grain.GetPrimaryKey(out var keyExt);
             var split = keyExt.Split('|');
             return split[0];
         }
@@ -38,7 +38,7 @@ namespace Orleans.Graph
         [CanBeNull]
         public static string GetGraphPartition(this IGraphElementGrain grain)
         {
-            grain.GetPrimaryKey(out string keyExt);
+            grain.GetPrimaryKey(out var keyExt);
             var split = keyExt.Split('|');
             return split.Length == 2 ? split[1] : null;
         }

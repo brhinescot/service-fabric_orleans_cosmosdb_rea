@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Orleans.Graph.Definition;
+using ReaService.Orleans.Definition;
 
 #endregion
 
@@ -12,7 +13,7 @@ namespace Orleans.Graph.Test.Definition
     /// 
     /// </summary>
     [GraphElement(DefaultPartition = "users")]
-    public interface IPersonVertex : IVertex
+    public interface IPerson : IVertex
     {
         /// <summary>
         /// 
@@ -32,6 +33,12 @@ namespace Orleans.Graph.Test.Definition
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        Task<IProfileVertex> AddProfileAsync(ProfileData data);
+        Task<IProfile> AddProfileAsync(ProfileData data);
+    }
+    
+    [GraphElement(DefaultPartition = "organizations")]
+    public interface IOrganization : IAgent
+    {
+        Task AddPerson(IPerson person);
     }
 }

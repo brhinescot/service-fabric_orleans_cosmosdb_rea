@@ -5,11 +5,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 
 #endregion
 
-namespace ReaService.Orleans.Api.Middleware
+namespace ReaService.Orleans.Api
 {
     /// <summary>
     /// 

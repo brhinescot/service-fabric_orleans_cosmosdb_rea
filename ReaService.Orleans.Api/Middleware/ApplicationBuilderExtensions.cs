@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 
 #endregion
 
-namespace ReaService.Orleans.Api.Middleware
+namespace ReaService.Orleans.Api
 {
     public static class ApplicationBuilderExtensions
     {
