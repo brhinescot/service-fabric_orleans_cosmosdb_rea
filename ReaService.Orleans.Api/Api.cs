@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -33,9 +34,14 @@ namespace ReaService.Orleans.Api
                     new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
                     {
                         ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
-
+                        
                         return new WebHostBuilder()
                             .UseKestrel()
+                            .ConfigureAppConfiguration(builder =>
+                            {
+                                builder.AddServiceFabricConfiguration(serviceContext);
+                                builder.AddEnvironmentVariables();
+                            })
                             .ConfigureServices(
                                 services => services
                                     .AddSingleton(serviceContext))

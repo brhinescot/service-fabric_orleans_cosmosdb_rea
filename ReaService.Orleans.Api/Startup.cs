@@ -87,8 +87,8 @@ namespace ReaService.Orleans.Api
 
             services.AddScoped(provider =>
             {
-//                var context = provider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-//                var organizationHeader = context.Request.Headers["organization"];
+                var context = provider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+                var organizationClaim = context.User.FindFirst(claim => claim.Type == "Organization");
 
                 var clusterClient = provider.GetRequiredService<IClusterClient>();
                 return clusterClient.GetVertexGrain<IOrganization>(Guid.ParseExact("c94ed5be-a7a7-4bff-af0c-adcdac615908", "D"), "partition0");

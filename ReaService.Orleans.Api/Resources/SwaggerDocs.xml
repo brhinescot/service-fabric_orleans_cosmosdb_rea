@@ -50,6 +50,19 @@
             
             </summary>
         </member>
+        <member name="M:ReaService.Orleans.Api.RequestTrackingMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:ReaService.Orleans.Api.RequestTrackingMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
         <member name="M:ReaService.Orleans.Api.StringExtensions.ToLowerInvariantWithTemplate(System.String,System.Char,System.Char)">
             <summary>
                 Returns a copy of this string converted to lowercase, skipping letters that fall between the

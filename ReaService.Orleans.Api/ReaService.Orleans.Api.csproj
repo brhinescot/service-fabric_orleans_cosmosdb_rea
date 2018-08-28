@@ -37,6 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Orleans.Graph.Definition\Orleans.Graph.Definition.csproj" />
     <ProjectReference Include="..\Orleans.Graph.Test.Definition\Orleans.Graph.Test.Definition.csproj" />
+    <ProjectReference Include="..\ReaService.Core\ReaService.Core.csproj" />
     <ProjectReference Include="..\ReaService.Orleans.Definition\ReaService.Orleans.Definition.csproj" />
   </ItemGroup>
 

@@ -26,6 +26,7 @@ namespace Orleans.Graph.Test.Definition
         /// 
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         Task<PersonalData> GetPersonalDataAsync();
 
         /// <summary>
@@ -33,12 +34,18 @@ namespace Orleans.Graph.Test.Definition
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        Task<IProfile> AddProfileAsync(ProfileData data);
+        [NotNull]
+        Task<IProfile> AddProfileAsync([NotNull] ProfileData data);
     }
     
     [GraphElement(DefaultPartition = "organizations")]
     public interface IOrganization : IAgent
     {
-        Task AddPerson(IPerson person);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        Task AddPerson([NotNull] IPerson person);
     }
 }

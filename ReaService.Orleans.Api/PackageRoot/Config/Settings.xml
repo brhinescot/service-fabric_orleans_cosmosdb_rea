@@ -6,7 +6,7 @@
   </Section>
 
   <Section Name="Logging">
-    <Parameter Name="IncludeScopes" Value="" />
+    <Parameter Name="IncludeScopes" Value="false" />
     <Parameter Name="LogLevel:Default" Value="Debug" />
     <Parameter Name="LogLevel:System" Value="Information" />
     <Parameter Name="LogLevel:Microsoft" Value="Information" />

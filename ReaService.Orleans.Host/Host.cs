@@ -77,7 +77,7 @@ namespace ReaService.Orleans.Host
                         options.Database = configParameters["Database"].Value;
                         options.Collection = configParameters["Collection"].Value;
                     });
-
+                    
                     // Add the application assemblies.
                     siloBuilder.ConfigureApplicationParts(parts =>
                     {
@@ -86,7 +86,7 @@ namespace ReaService.Orleans.Host
                         parts.AddApplicationPart(typeof(IVertex).Assembly);
                         parts.AddApplicationPart(typeof(VertexGrain).Assembly);
                         parts.AddApplicationPart(typeof(IPerson).Assembly);
-                        parts.AddApplicationPart(typeof(PersonVertex).Assembly);
+                        parts.AddApplicationPart(typeof(PersonAgent).Assembly);
                     });
 
                     siloBuilder.UseSiloUnobservedExceptionsHandler();
@@ -94,21 +94,5 @@ namespace ReaService.Orleans.Host
 
             return new[] { orleansListener };
         }
-
-//        /// <summary>
-//        /// This is the main entry point for your service instance.
-//        /// </summary>
-//        /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service instance.</param>
-//        protected override async Task RunAsync(CancellationToken cancellationToken)
-//        {
-//            while (true)
-//            {
-//                cancellationToken.ThrowIfCancellationRequested();
-//
-//                ServiceEventSource.Current.ServiceMessage(this.Context, "Working");
-//
-//                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
-//            }
-//        }
     }
 }

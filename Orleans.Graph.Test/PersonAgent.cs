@@ -11,43 +11,45 @@ using ReaService.Orleans;
 
 namespace Orleans.Graph.Test
 {
-    /// <summary>
-    /// </summary>
     [UsedImplicitly]
-    public class PersonVertex : VertexGrain, IPerson
+    public class PersonAgent : AgentGrain, IPerson
     {
-        #region IPerson Members
+        private const string FirstName = "firstName";
+        private const string LastName = "lastName";
+        private const string MiddleName = "middleName";
+        private const string Birthdate = "birthDate";
 
-        /// <summary>
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        #region IPerson Members
+        
         Task IPerson.SetPersonalDataAsync(PersonalData data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            State["firstName"] = data.FirstName;
-            State["middleName"] = data.MiddleName;
-            State["lastName"] = data.LastName;
-            State["birthDate"] = data.Birthdate;
+            State[FirstName] = data.FirstName;
+            State[MiddleName] = data.MiddleName;
+            State[LastName] = data.LastName;
+            State[Birthdate] = data.Birthdate;
 
             return WriteStateAsync();
         }
 
         Task<PersonalData> IPerson.GetPersonalDataAsync()
         {
-            var data = new PersonalData(State["firstName"], State["lastName"])
+            var data = new PersonalData(State[FirstName], State[LastName])
             {
-                MiddleName = State["middleName"],
-                Birthdate = State["birthDate"]
+                MiddleName = State[MiddleName],
+                Birthdate = State[Birthdate]
             };
 
             return Task.FromResult(data);
         }
 
-        public async Task<IProfile> AddProfileAsync(ProfileData data)
+        async Task<IProfile> IPerson.AddProfileAsync(ProfileData data)
         {
+            if (data == null) 
+                throw new ArgumentNullException(nameof(data));
+
             await SynchronizationContextRemover.Instance;
 
             var hasProfileEdge = GrainFactory.GetEdgeGrain<IHasProfile>(Guid.NewGuid(), this);
@@ -59,15 +61,5 @@ namespace Orleans.Graph.Test
         }
 
         #endregion
-    }
-    
-    [UsedImplicitly]
-    public class OrganizationAgent : AgentGrain, IOrganization
-    {
-        public Task AddPerson(IPerson person)
-        {
-            State["personId"] = person.ToKeyString();
-            return WriteStateAsync();
-        }
     }
 }

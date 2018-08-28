@@ -1,12 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="ReaServiceType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="ReaService.Orleans.Api_InstanceCount" DefaultValue="-1" />
     <Parameter Name="ReaService.Orleans.Host_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="Orleans.Graph.Host_Endpoint" DefaultValue="" />
-    <Parameter Name="Orleans.Graph.Host_AuthKey" DefaultValue="" />
-    <Parameter Name="Orleans.Graph.Host_Database" DefaultValue="" />
-    <Parameter Name="Orleans.Graph.Host_Collection" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Host_Endpoint" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Host_AuthKey" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Host_Database" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Host_Collection" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ReaService.Orleans.Api_Logging:IncludeScopes" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Default" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:System" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Microsoft" DefaultValue="" />
     <Parameter Name="Environment" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -14,7 +18,18 @@
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ReaService.Orleans.ApiPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <ConfigOverrides>
+      <ConfigOverride Name="Config">
+        <Settings>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[ReaService.Orleans.Api_Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[ReaService.Orleans.Api_Logging:LogLevel:Default]" />
+            <Parameter Name="LogLevel:System" Value="[ReaService.Orleans.Api_Logging:LogLevel:System]" />
+            <Parameter Name="LogLevel:Microsoft" Value="[ReaService.Orleans.Api_Logging:LogLevel:Microsoft]" />
+          </Section>
+        </Settings>
+      </ConfigOverride>
+    </ConfigOverrides>
     <EnvironmentOverrides CodePackageRef="Code">
       <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[Environment]" />
     </EnvironmentOverrides>
@@ -25,10 +40,10 @@
       <ConfigOverride Name="Config">
         <Settings>
           <Section Name="CosmosDbConfig">
-            <Parameter Name="Endpoint" Value="[Orleans.Graph.Host_Endpoint]" />
-            <Parameter Name="AuthKey" Value="[Orleans.Graph.Host_AuthKey]" />
-            <Parameter Name="Database" Value="[Orleans.Graph.Host_Database]" />
-            <Parameter Name="Collection" Value="[Orleans.Graph.Host_Collection]" />
+            <Parameter Name="Endpoint" Value="[ReaService.Orleans.Host_Endpoint]" />
+            <Parameter Name="AuthKey" Value="[ReaService.Orleans.Host_AuthKey]" />
+            <Parameter Name="Database" Value="[ReaService.Orleans.Host_Database]" />
+            <Parameter Name="Collection" Value="[ReaService.Orleans.Host_Collection]" />
           </Section>
         </Settings>
       </ConfigOverride>
