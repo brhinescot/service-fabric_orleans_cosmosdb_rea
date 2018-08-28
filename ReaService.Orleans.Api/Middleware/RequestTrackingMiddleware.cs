@@ -37,7 +37,7 @@ namespace ReaService.Orleans.Api
         public async Task Invoke(HttpContext context)
         {
             var correlationId = context.Request.Headers[CorrelationIdHeader];
-            if(correlationId == string.Empty)
+            if(string.IsNullOrEmpty(correlationId))
                 correlationId = Guid.NewGuid().ToString("N");
             context.Items.Add("CorrelationId", correlationId);
 

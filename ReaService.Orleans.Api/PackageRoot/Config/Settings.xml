@@ -11,4 +11,9 @@
     <Parameter Name="LogLevel:System" Value="Information" />
     <Parameter Name="LogLevel:Microsoft" Value="Information" />
   </Section>
+
+  <Section Name="JwtOptions">
+    <Parameter Name="Issuer" Value="REA_Service" />
+    <Parameter Name="Audience" Value="com.development.rea" />
+  </Section>
 </Settings>

@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using Orleans.Graph;
@@ -15,11 +16,12 @@ namespace ReaService.Orleans.Api.Controllers
     [Produces("application/json")]
     [Route("person")]
     [ApiController]
+    [Authorize]
     public class PersonController : ControllerBaseExt
     {
         #region Member Fields
 
-        private readonly IClusterClient clusterClient;
+        private readonly IGrainFactory grainFactory;
         private readonly IOrganization organization;
 
         #endregion
@@ -27,18 +29,18 @@ namespace ReaService.Orleans.Api.Controllers
         /// <summary>
         ///     The PersonController
         /// </summary>
-        /// <param name="clusterClient"></param>
-        /// <param name="organization"></param>
-        public PersonController(IClusterClient clusterClient, IOrganization organization)
+        /// <param name="grainFactory"></param>
+        /// <param name="organization">The organization to which the user belongs.</param>
+        public PersonController(IGrainFactory grainFactory, IOrganization organization)
         {
-            this.clusterClient = clusterClient;
+            this.grainFactory = grainFactory;
             this.organization = organization;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<PersonalData>> GetPerson(Guid id)
         {
-            var person = clusterClient.GetVertexGrain<IPerson>(id, "partition0");
+            var person = grainFactory.GetVertexGrain<IPerson>(id, "partition0");
             return Ok(await person.GetPersonalDataAsync());
         }
 
@@ -51,7 +53,8 @@ namespace ReaService.Orleans.Api.Controllers
         public async Task<ActionResult> CreatePerson(PersonalData model)
         {
             var primaryKey = Guid.NewGuid();
-            var person = clusterClient.GetVertexGrain<IPerson>(primaryKey, "partition0");
+            var person = grainFactory.GetVertexGrain<IPerson>(primaryKey, "partition0");
+            model.LastName = organization.ToKeyString();
             await person.SetPersonalDataAsync(model);
 
             await organization.AddPerson(person);

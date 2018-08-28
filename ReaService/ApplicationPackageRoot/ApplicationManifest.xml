@@ -11,6 +11,8 @@
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Default" DefaultValue="" />
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:System" DefaultValue="" />
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Microsoft" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_JwtOptions:Issuer" DefaultValue="" />
+    <Parameter Name="ReaService.Orleans.Api_JwtOptions:Audience" DefaultValue="" />
     <Parameter Name="Environment" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -26,6 +28,10 @@
             <Parameter Name="LogLevel:Default" Value="[ReaService.Orleans.Api_Logging:LogLevel:Default]" />
             <Parameter Name="LogLevel:System" Value="[ReaService.Orleans.Api_Logging:LogLevel:System]" />
             <Parameter Name="LogLevel:Microsoft" Value="[ReaService.Orleans.Api_Logging:LogLevel:Microsoft]" />
+          </Section>
+          <Section Name="JwtOptions">
+            <Parameter Name="Issuer" Value="[ReaService.Orleans.Api_JwtOptions:Issuer]" />
+            <Parameter Name="Audience" Value="[ReaService.Orleans.Api_JwtOptions:Audience]" />
           </Section>
         </Settings>
       </ConfigOverride>

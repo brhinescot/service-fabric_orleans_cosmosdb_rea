@@ -13,6 +13,7 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
+        "JWT_SECRET_KEY": "5CrnBLzBByTPUDmiHDjSyJdAEITIYDvvEcvlhPFRUqQRkGLhOhFSG9MfaoQCxK3Kkmr06MnPvFGIhV6IOxTzlo6D8Od7x5AIcMM2q49vCvaG2GxIe17TAFhlHcWd1JgM",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

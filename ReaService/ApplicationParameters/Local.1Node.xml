@@ -11,6 +11,8 @@
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Default" Value="Debug" />
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:System" Value="Information" />
     <Parameter Name="ReaService.Orleans.Api_Logging:LogLevel:Microsoft" Value="Information" />
+    <Parameter Name="ReaService.Orleans.Api_JwtOptions:Issuer" Value="com.development.rea" />
+    <Parameter Name="ReaService.Orleans.Api_JwtOptions:Audience" Value="com.development.rea" />
     <Parameter Name="Environment" Value="Development" />
   </Parameters>
 </Application>
